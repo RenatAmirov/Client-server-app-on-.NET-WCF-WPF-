@@ -1,9 +1,6 @@
-﻿using System;
+﻿using EFOrderApplication;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 
 namespace WcfOrderApplication
 {
@@ -12,10 +9,22 @@ namespace WcfOrderApplication
     /// </summary>
     public class OrderService : IOrderService
     {
+        DataModel db = new DataModel();
+
         public List<Order> GetOrders()
         {
-            // TODO get orders from db
-            return new List<Order> { new Order { OrderDate = DateTime.Now, OrderNum = "12345", LastModifiedDate = DateTime.Now } };
+
+
+            var dbOrders = db.Orders;
+            var orders = new List<Order>();
+            foreach(var dbOrder in dbOrders)
+            {
+                orders.Add(new Order {
+                    OrderDate = dbOrder.OrderDate, 
+                    OrderNum = dbOrder.OrderNum, 
+                    LastModifiedDate = dbOrder.LastModifiedDate });
+            }
+            return orders;
         }
     }
 }
